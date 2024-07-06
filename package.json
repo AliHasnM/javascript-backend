@@ -1,0 +1,22 @@
+{
+  "name": "javascript-backend",
+  "version": "1.0.0",
+  "description": "JavaScript Backend Expert with Production Level Approach",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "javascript",
+    "backend",
+    "node",
+    "js",
+    "express",
+    "js",
+    "mongodb",
+    "mongoose",
+    "js"
+  ],
+  "author": "Ali Hassan",
+  "license": "ISC"
+}
