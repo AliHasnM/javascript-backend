@@ -18,5 +18,8 @@
     "js"
   ],
   "author": "Ali Hassan",
-  "license": "ISC"
+  "license": "ISC",
+  "devDependencies": {
+    "nodemon": "^3.1.4"
+  }
 }
