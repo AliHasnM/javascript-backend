@@ -1,14 +1,15 @@
-import mongoose, { Schema, plugin } from "mongoose";
+import mongoose, { Schema, plugin } from "mongoose"; // plugin for pagination in aggregations
 import mongooseAggregatePaginate from "mongoose-aggregate-paginate-v2";
 
+// Defining the schema for the video collection
 const videoSchema = new Schema(
   {
     videoFile: {
-      type: String,
+      type: String, // cloudinary url
       required: true,
     },
     thumbnail: {
-      type: String,
+      type: String, // cloudinary url
       required: true,
     },
     title: {
@@ -38,10 +39,12 @@ const videoSchema = new Schema(
     },
   },
   {
-    timestamps: true,
+    timestamps: true, // Automatically adds createdAt and updatedAt timestamps
   },
 );
 
+// Applying the pagination plugin to the schema
 videoSchema.plugin(mongooseAggregatePaginate);
 
+// Creating and exporting the Video model
 export const Video = mongoose.model("Video", videoSchema);
