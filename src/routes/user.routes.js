@@ -17,20 +17,29 @@ const router = Router();
 router.route("/register").post(
   upload.fields([
     {
-      name: "avatar",
-      maxCount: 1,
+      name: "avatar", // Handle file upload for avatar
+      maxCount: 1, // Maximum 1 file
     },
     {
-      name: "coverImage",
-      maxCount: 1,
+      name: "coverImage", // Handle file upload for cover image
+      maxCount: 1, // Maximum 1 file
     },
   ]),
-  registerUser,
+  registerUser, // Call the registerUser controller
 );
+
+// Define a POST route for user login
+// When a POST request is made to /login, the loginUser function is called
 router.route("/login").post(loginUser);
 
-// SECURED ROUTES
+// Define a POST route for user logout
+// This route is protected by the verifyJWT middleware
+// When a POST request is made to /logout, the verifyJWT middleware is called first
+// If the token is verified, the logoutUser function is called
 router.route("/logout").post(verifyJWT, logoutUser);
+
+// Define a POST route for refreshing the access token
+// When a POST request is made to /refresh-token, the refreshAccessToken function is called
 router.route("/refresh-token").post(refreshAccessToken);
 
 // Export the router to be used in other parts of the application
