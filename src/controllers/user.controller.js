@@ -251,4 +251,153 @@ const refreshAccessToken = asyncHandler(async (req, res) => {
   }
 });
 
-export { registerUser, loginUser, logoutUser, refreshAccessToken };
+// Function to change the current user's password
+const changeCurrentPassword = asyncHandler(async (req, res) => {
+  const { oldPassword, newPassword } = req.body;
+
+  // Find the user by their ID
+  const user = await User.findById(req.user?._id);
+  // Check if the old password is correct
+  const isPasswordCorrect = await user.isPasswordCorrect(oldPassword);
+
+  // If the old password is incorrect, throw an error
+  if (!isPasswordCorrect) {
+    throw new ApiError(400, "Invalid Old Password");
+  }
+
+  // Set the new password
+  user.password = newPassword;
+  // Save the user without validating the password before save
+  await user.save({ ValiditeBeforeSave: false });
+
+  // Return a success response
+  return res
+    .status(200)
+    .json(new ApiResponse(200, {}, "Password Change Successfully"));
+});
+
+// Function to get the current user's details
+const getCurrentUser = asyncHandler(async (req, res) => {
+  // Return the current user's details
+  return res
+    .status(200)
+    .json(200, req.user, "Current User Fetched Successfully");
+});
+
+// Function to update the current user's account details
+const updateAccountDetails = asyncHandler(async (req, res) => {
+  const { fullName, email } = req.body;
+
+  // If fullName or email is missing, throw an error
+  if (!fullName || !email) {
+    throw new ApiError(400, "All fileds are required");
+  }
+
+  // Find the user by their ID and update their details
+  const user = User.findByIdAndUpdate(
+    req.user?._id,
+    {
+      $set: {
+        fullName: fullName,
+        email: email,
+      },
+    },
+    { new: true },
+  ).select("-password");
+
+  // Return a success response with the updated user details
+  return res
+    .status(200)
+    .json(new ApiResponse(200, user, "Account details update successfully"));
+});
+
+// Function to update the current user's avatar
+const updateUserAvatar = asyncHandler(async (req, res) => {
+  const avatarLocalPath = req.file?.path;
+
+  // If avatar file is missing, throw an error
+  if (!avatarLocalPath) {
+    throw new ApiError(400, "Avatar file is missing - multer side");
+  }
+
+  // Upload the avatar to Cloudinary
+  const avatar = await uploadOnCloudinary(avatarLocalPath);
+
+  // If there was an error uploading the avatar, throw an error
+  if (!avatar.url) {
+    throw new ApiError(
+      400,
+      "Error while uploading on avatar - cloudinary side",
+    );
+  }
+
+  // Find the user by their ID and update their avatar
+  const user = await User.findByIdAndUpdate(
+    req.user?._id,
+    {
+      $set: {
+        avatar: avatar.url,
+      },
+    },
+    {
+      new: true,
+    },
+  ).select("-password");
+
+  // Return a success response with the updated user details
+  return res
+    .status(200)
+    .json(new ApiResponse(200, user, "Avatar Image updated successfully"));
+});
+
+// Function to update the current user's cover image
+const updateUserCoverImage = asyncHandler(async (req, res) => {
+  const coverImageLocalPath = req.file?.path;
+
+  // If cover image file is missing, throw an error
+  if (!coverImageLocalPath) {
+    throw new ApiError(400, "Cover Image file is missing - multer side");
+  }
+
+  // Upload the cover image to Cloudinary
+  const coverImage = await uploadOnCloudinary(coverImageLocalPath);
+
+  // If there was an error uploading the cover image, throw an error
+  if (!coverImage.url) {
+    throw new ApiError(
+      400,
+      "Error while uploading on Cover Image - cloudinary side",
+    );
+  }
+
+  // Find the user by their ID and update their cover image
+  const user = await User.findByIdAndUpdate(
+    req.user?._id,
+    {
+      $set: {
+        coverImage: coverImage.url,
+      },
+    },
+    {
+      new: true,
+    },
+  ).select("-password");
+
+  // Return a success response with the updated user details
+  return res
+    .status(200)
+    .json(new ApiResponse(200, user, "Cover Image updated successfully"));
+});
+
+// Export the functions for use in other modules
+export {
+  registerUser,
+  loginUser,
+  logoutUser,
+  refreshAccessToken,
+  changeCurrentPassword,
+  getCurrentUser,
+  updateAccountDetails,
+  updateUserAvatar,
+  updateUserCoverImage,
+};
