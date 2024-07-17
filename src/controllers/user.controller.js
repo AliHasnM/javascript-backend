@@ -281,7 +281,7 @@ const getCurrentUser = asyncHandler(async (req, res) => {
   // Return the current user's details
   return res
     .status(200)
-    .json(200, req.user, "Current User Fetched Successfully");
+    .json(new ApiResponse(200, req.user, "Current User Fetched Successfully"));
 });
 
 // Function to update the current user's account details
@@ -294,7 +294,7 @@ const updateAccountDetails = asyncHandler(async (req, res) => {
   }
 
   // Find the user by their ID and update their details
-  const user = User.findByIdAndUpdate(
+  const user = await User.findByIdAndUpdate(
     req.user?._id,
     {
       $set: {
@@ -319,6 +319,8 @@ const updateUserAvatar = asyncHandler(async (req, res) => {
   if (!avatarLocalPath) {
     throw new ApiError(400, "Avatar file is missing - multer side");
   }
+
+  // TODO: delete old image - assignment
 
   // Upload the avatar to Cloudinary
   const avatar = await uploadOnCloudinary(avatarLocalPath);
