@@ -4,6 +4,7 @@ import { User } from "../models/user.model.js";
 import { uploadOnCloudinary } from "../utils/cloudinary.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
 import jwt from "jsonwebtoken";
+import mongoose from "mongoose";
 
 // Function to generate access and refresh tokens for a user
 const generateAccessAndRefreshTokens = async (userId) => {
@@ -472,6 +473,68 @@ const getUserChannelProfile = asyncHandler(async (req, res) => {
     );
 });
 
+// Function to get User Watch History
+const getWatchHistory = asyncHandler(async (req, res) => {
+  // Perform an aggregation query on the User collection
+  const user = await User.aggregate([
+    {
+      // Match the user document by the provided user ID in the request
+      $match: {
+        _id: new mongoose.Types.ObjectId(req.user._id),
+      },
+    },
+    {
+      // Lookup the watch history from the videos collection
+      $lookup: {
+        from: "videos", // collection to join with
+        localField: "watchHistory", // field form input document (users collection)
+        foreignField: "_id", // field form videos collection
+        as: "watchHistory", // name of new array field to add the user document
+        pipeline: [
+          {
+            $lookup: {
+              from: "users", // collection to join with
+              localField: "owner", // field form input document (videos collection)
+              foreignField: "_id", // field from users collection
+              as: "owner", // name of new array field to add the video document
+              pipeline: [
+                {
+                  // Project only the required fields from the owner document
+                  $project: {
+                    fullName: 1, // include fullName field
+                    username: 1, // include username field
+                    avatar: 1, // include avatar field
+                  },
+                },
+                {
+                  // Add a field to ensure the owner field is a single object instead of an array
+                  $addFields: {
+                    owner: {
+                      // Take the first element of the owner array
+                      $first: "$owner",
+                    },
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ]);
+
+  // Send the watch history in the response with a success message
+  return res
+    .status(200)
+    .json(
+      new ApiResponse(
+        200,
+        user[0].watchHistory,
+        "Watch History Fetched Successfully",
+      ),
+    );
+});
+
 // Export the functions for use in other modules
 export {
   registerUser,
@@ -484,4 +547,5 @@ export {
   updateUserAvatar,
   updateUserCoverImage,
   getUserChannelProfile,
+  getWatchHistory,
 };
