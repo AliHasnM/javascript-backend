@@ -1,4 +1,4 @@
-import mongoose, { Schema, plugin } from "mongoose"; // plugin for pagination in aggregations
+import mongoose, { Schema, plugin } from "mongoose";
 import mongooseAggregatePaginate from "mongoose-aggregate-paginate-v2";
 
 // Defining the schema for the video collection
