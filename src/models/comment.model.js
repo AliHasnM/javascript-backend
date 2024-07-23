@@ -1,6 +1,7 @@
 import mongoose, { Schema, plugin } from "mongoose";
 import mongooseAggregatePaginate from "mongoose-aggregate-paginate-v2";
 
+// Define the schema for comments
 const commentSchema = new Schema(
   {
     content: {
