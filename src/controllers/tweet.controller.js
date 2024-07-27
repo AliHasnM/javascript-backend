@@ -103,10 +103,6 @@ const deleteTweet = asyncHandler(async (req, res) => {
   const { tweetId } = req.params;
   const userId = req.user._id; // Assuming user is added to req by authentication middleware
 
-  console.log(
-    `Received request to delete tweet with ID: ${tweetId} by user ID: ${userId}`,
-  );
-
   // Check if tweetId is valid
   if (!isValidObjectId(tweetId)) {
     console.error("Invalid tweet ID");
@@ -127,8 +123,6 @@ const deleteTweet = asyncHandler(async (req, res) => {
 
   // Delete the tweet
   await tweet.deleteOne();
-
-  console.log("Tweet deleted successfully");
 
   // Respond with success message
   return res
