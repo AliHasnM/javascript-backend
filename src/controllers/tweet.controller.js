@@ -21,7 +21,7 @@ const createTweet = asyncHandler(async (req, res) => {
   // Respond with the created tweet
   return res
     .status(201)
-    .json(new ApiResponse(201, "Tweet created successfully", newTweet));
+    .json(new ApiResponse(201, newTweet, "Tweet created successfully"));
 });
 
 // Function to get tweets of a specific user
@@ -43,7 +43,7 @@ const getUserTweets = asyncHandler(async (req, res) => {
   // Respond with the fetched tweets
   return res
     .status(200)
-    .json(new ApiResponse(200, "User tweets fetched successfully", tweets));
+    .json(new ApiResponse(200, tweets, "User tweets fetched successfully"));
 });
 
 // Function to update a tweet
@@ -75,7 +75,7 @@ const updateTweet = asyncHandler(async (req, res) => {
   // Respond with the updated tweet
   return res
     .status(200)
-    .json(new ApiResponse(200, "Tweet updated successfully", tweet));
+    .json(new ApiResponse(200, tweet, "Tweet updated successfully"));
 });
 //   const { tweetId } = req.params;
 //   const userId = req.user._id; // Assuming user is added to req by authentication middleware
@@ -127,7 +127,7 @@ const deleteTweet = asyncHandler(async (req, res) => {
   // Respond with success message
   return res
     .status(200)
-    .json(new ApiResponse(200, "Tweet deleted successfully"));
+    .json(new ApiResponse(200, {}, "Tweet deleted successfully"));
 });
 
 export { createTweet, getUserTweets, updateTweet, deleteTweet };

@@ -26,12 +26,12 @@ const toggleSubscription = asyncHandler(async (req, res) => {
     await subscription.deleteOne();
     return res
       .status(200)
-      .json(new ApiResponse(200, "Unsubscribed successfully"));
+      .json(new ApiResponse(200, {}, "Unsubscribed successfully"));
   } else {
     await Subscription.create({ subscriber: userId, channel: channelId });
     return res
       .status(201)
-      .json(new ApiResponse(201, "Subscribed successfully"));
+      .json(new ApiResponse(201, {}, "Subscribed successfully"));
   }
 });
 
@@ -54,8 +54,8 @@ const getSubscribedChannels = asyncHandler(async (req, res) => {
     .json(
       new ApiResponse(
         200,
-        "Subscribed channels fetched successfully",
         subscriptions,
+        "Subscribed channels fetched successfully",
       ),
     );
 });
@@ -77,7 +77,7 @@ const getUserChannelSubscribers = asyncHandler(async (req, res) => {
   return res
     .status(200)
     .json(
-      new ApiResponse(200, "Subscribers fetched successfully", subscribers),
+      new ApiResponse(200, subscribers, "Subscribers fetched successfully"),
     );
 });
 

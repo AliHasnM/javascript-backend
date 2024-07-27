@@ -16,10 +16,10 @@ const toggleVideoLike = asyncHandler(async (req, res) => {
 
   if (existingLike) {
     await Like.deleteOne({ _id: existingLike._id });
-    return res.status(200).json(new ApiResponse(200, "Video like removed"));
+    return res.status(200).json(new ApiResponse(200, {}, "Video like removed"));
   } else {
     await Like.create({ video: videoId, likedBy: userId });
-    return res.status(201).json(new ApiResponse(201, "Video liked"));
+    return res.status(201).json(new ApiResponse(201, {}, "Video liked"));
   }
 });
 
@@ -38,10 +38,12 @@ const toggleCommentLike = asyncHandler(async (req, res) => {
 
   if (existingLike) {
     await Like.deleteOne({ _id: existingLike._id });
-    return res.status(200).json(new ApiResponse(200, "Comment like removed"));
+    return res
+      .status(200)
+      .json(new ApiResponse(200, {}, "Comment like removed"));
   } else {
     await Like.create({ comment: commentId, likedBy: userId });
-    return res.status(201).json(new ApiResponse(201, "Comment liked"));
+    return res.status(201).json(new ApiResponse(201, {}, "Comment liked"));
   }
 });
 
@@ -57,10 +59,10 @@ const toggleTweetLike = asyncHandler(async (req, res) => {
 
   if (existingLike) {
     await Like.deleteOne({ _id: existingLike._id });
-    return res.status(200).json(new ApiResponse(200, "Tweet like removed"));
+    return res.status(200).json(new ApiResponse(200, {}, "Tweet like removed"));
   } else {
     await Like.create({ tweet: tweetId, likedBy: userId });
-    return res.status(201).json(new ApiResponse(201, "Tweet liked"));
+    return res.status(201).json(new ApiResponse(201, {}, "Tweet liked"));
   }
 });
 

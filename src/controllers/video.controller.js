@@ -49,7 +49,7 @@ const getAllVideos = asyncHandler(async (req, res) => {
   // Success Message and Response
   return res
     .status(200)
-    .json(new ApiResponse(200, "Videos fetched successfully", videos));
+    .json(new ApiResponse(200, videos, "Videos fetched successfully"));
 });
 
 // Function to get video duration using ffprobe
@@ -105,7 +105,7 @@ const publishAVideo = asyncHandler(async (req, res) => {
   // Success message and Response
   return res
     .status(201)
-    .json(new ApiResponse(201, "Video published successfully", video));
+    .json(new ApiResponse(201, video, "Video published successfully"));
 });
 
 // Controller to get a video by ID
@@ -125,7 +125,7 @@ const getVideoById = asyncHandler(async (req, res) => {
   // Success message and Response
   return res
     .status(200)
-    .json(new ApiResponse(200, "Video fetched successfully", video));
+    .json(new ApiResponse(200, video, "Video fetched successfully"));
 });
 
 // Controller to update video details
@@ -153,7 +153,7 @@ const updateVideo = asyncHandler(async (req, res) => {
   // Success message and Response
   return res
     .status(200)
-    .json(new ApiResponse(200, "Video updated successfully", video));
+    .json(new ApiResponse(200, video, "Video updated successfully"));
 });
 
 // Controller to delete a video
@@ -176,7 +176,7 @@ const deleteVideo = asyncHandler(async (req, res) => {
   // Success message and Response
   return res
     .status(200)
-    .json(new ApiResponse(200, "Video deleted successfully"));
+    .json(new ApiResponse(200, {}, "Video deleted successfully"));
 });
 
 // Controller to toggle the publish status of a video
@@ -201,7 +201,7 @@ const togglePublishStatus = asyncHandler(async (req, res) => {
   return res
     .status(200)
     .json(
-      new ApiResponse(200, "Video publish status toggled successfully", video),
+      new ApiResponse(200, video, "Video publish status toggled successfully"),
     );
 });
 

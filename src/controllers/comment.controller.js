@@ -32,7 +32,7 @@ const getVideoComments = asyncHandler(async (req, res) => {
   // Return the paginated comments in the response
   return res
     .status(200)
-    .json(new ApiResponse(200, "Comments fetched successfully", comments));
+    .json(new ApiResponse(200, comments, "Comments fetched successfully"));
 });
 
 // Controller to add a new comment to a video
@@ -61,7 +61,7 @@ const addComment = asyncHandler(async (req, res) => {
   // Return the created comment in the response
   return res
     .status(201)
-    .json(new ApiResponse(201, "Comment added successfully", comment));
+    .json(new ApiResponse(201, comment, "Comment added successfully"));
 });
 
 // Controller to update an existing comment
@@ -89,7 +89,7 @@ const updateComment = asyncHandler(async (req, res) => {
   // Return the updated comment in the response
   return res
     .status(200)
-    .json(new ApiResponse(200, "Comment updated successfully", comment));
+    .json(new ApiResponse(200, comment, "Comment updated successfully"));
 });
 
 // Controller to delete an existing comment
@@ -115,7 +115,7 @@ const deleteComment = asyncHandler(async (req, res) => {
   // Return a success response
   return res
     .status(200)
-    .json(new ApiResponse(200, "Comment deleted successfully"));
+    .json(new ApiResponse(200, {}, "Comment deleted successfully"));
 });
 
 export { getVideoComments, addComment, updateComment, deleteComment };
